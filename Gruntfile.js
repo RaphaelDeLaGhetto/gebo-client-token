@@ -43,6 +43,7 @@ module.exports = function(grunt) {
         unused: true,
         boss: true,
         eqnull: true,
+        smarttabs: true,
         globals: {}
       },
       gruntfile: {
@@ -52,29 +53,43 @@ module.exports = function(grunt) {
         src: ['lib/**/*.js', 'test/**/*.js']
       }
     },
-    nodeunit: {
-      files: ['test/**/*_test.js']
-    },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      lib_test: {
+
+	  karma: {
+		//files: ['app/js/**/*.js', 'test/browser/**/*.js'],
         files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'nodeunit']
-      }
-    }
+		tasks: ['karma:unit:run'] //NOTE the :run flag
+	  },
+//      lib_test: {
+//        files: '<%= jshint.lib_test.src %>',
+//        tasks: ['jshint:lib_test', 'nodeunit']
+//      }
+    },
+
+	// Karma
+	karma: {
+	  unit: {
+	    options: {
+		  files: ['test/**/*.js']
+		}
+	  }
+    },
   });
+
+
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-karma');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'nodeunit', 'concat', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'karma', 'concat', 'uglify']);
 
 };
