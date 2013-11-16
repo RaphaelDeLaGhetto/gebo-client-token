@@ -1,0 +1,22 @@
+{
+  "name": "gebo-token",
+  "version": "0.0.0",
+  "homepage": "https://github.com/RaphaelDeLaGhetto/gebo-token",
+  "description": "Client-side AngularJS OAuth2 token service",
+  "main": "index.js",
+  "keywords": [
+    "gebo",
+    "OAuth2"
+  ],
+  "authors": [
+    "Daniel Bidulock"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

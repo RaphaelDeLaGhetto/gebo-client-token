@@ -1,0 +1,22 @@
+{
+  "name": "gebo-token",
+  "version": "0.0.0",
+  "description": "Client-side AngularJS OAuth2 token service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RaphaelDeLaGhetto/gebo-token.git"
+  },
+  "keywords": [
+    "gebo",
+    "OAuth2"
+  ],
+  "author": "Daniel Bidulock",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RaphaelDeLaGhetto/gebo-token/issues"
+  }
+}
