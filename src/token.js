@@ -57,9 +57,6 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
                           requiredAndMissing.join(', '));
         }
 
-        // TODO: Facebook uses comma-delimited scopes.
-        // This is not compliant with section 3.3 but perhaps support later.
-
         return {
           response_type: RESPONSE_TYPE,
           client_id: _endpoint.clientId,
@@ -87,7 +84,6 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
      */
     var _get = function() {
         return localStorage.getItem(_endpoint.localStorageName);
-//        return localStorage[_endpoint.localStorageName];
       };
 
     /**
@@ -97,7 +93,6 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
      */
     var _set = function(accessToken) {
         localStorage.setItem(_endpoint.localStorageName, accessToken);
-//        localStorage[_endpoint.localStorageName] = accessToken;
       };
 
     /**
@@ -212,8 +207,11 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
      * Verify the user is still authenticated
      *
      * @param string
+     *
+     * @return promise
      */
-    var _verify = function(accessToken, deferred) {
+    var _verify = function(accessToken) {
+        var deferred = $q.defer();
 
         $http.get(_getEndpointUri('verify') + '?access_token=' + accessToken).
                 success(
@@ -224,6 +222,8 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
                     function(obj, err) {
                         deferred.reject(err);
                       });
+
+        return deferred.promise;
       };
 
     /**
@@ -256,6 +256,10 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
      * Not currently using this, but it may be useful soon
      *
      * From: http://blog.tryfinally.co.za/2012/12/form-url-encoded-post-with-angularjs.html
+     *
+     * @param string
+     *
+     * @return string
      */
     function _formEncode(obj) {
         var jsonString = '';
@@ -272,14 +276,13 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
      * Get an endpoint URI
      *
      * @param string
+     *
+     * @return string
      */
     function _getEndpointUri(endpoint) {
         return _endpoint.gebo + _endpoint[endpoint]; 
       }
 
-    /**
-     * API
-     */
     return {
       clear: _clear,
       data: function() {

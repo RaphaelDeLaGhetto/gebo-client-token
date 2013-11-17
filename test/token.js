@@ -20,11 +20,9 @@ describe('Service: Token', function () {
                 admin: false,
             };
 
-    // instantiate service
     var token,
         $rootScope,
         $httpBackend;
-
     
     beforeEach(module('gebo-client-token'));
 
@@ -292,29 +290,15 @@ describe('Service: Token', function () {
          * verify
          */
         describe('verify', function() {
-            // This isn't really doing anything. Revisit
-            // In fact, this test is better located in the MainCtrl
-            // tests, me thinks.
-            it('should simulate a promise', inject(function($q, $rootScope) {
+            it('should return verification data', inject(function($q, $rootScope) {
                 $httpBackend.expectGET(token.getEndpointUri('verify') + 
                         '?access_token=' + ACCESS_TOKEN); 
     
-                var verificationData;
-                var deferred = $q.defer();
-                var promise = deferred.promise;
+                token.verify(ACCESS_TOKEN).
+                    then(function(verified) {
+                        expect(verified).toEqual(VERIFICATION_DATA);
+                      });
     
-                promise.then(function(data) { verificationData = data; });
-    
-                token.verify(ACCESS_TOKEN, deferred);
-    
-                // Simulate resolving of promise
-                deferred.resolve(VERIFICATION_DATA);
-                
-                expect(verificationData).toBe(undefined);
-    
-                $rootScope.$apply();
-    
-                expect(verificationData).toEqual(VERIFICATION_DATA);
                 $httpBackend.flush();
             }));
     
