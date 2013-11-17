@@ -2,8 +2,11 @@
 
 describe('Service: Token', function () {
 
-    var REDIRECT_URI = 'http://myhost.com',
-        GEBO_ADDRESS = 'http://theirhost.com',
+    var REDIRECT_URI = 'https://capitolhill.ca',
+        GEBO_ADDRESS = 'https://theirhost.com',
+        CLIENT_ID = 'gebo-client-token@capitolhill.ca',
+        CLIENT_NAME = 'gebo-client-token',
+        LOCAL_STORAGE_NAME = 'gebo-client-token',
         SCOPES = ['*'],
         ACCESS_TOKEN = '1234';
 
@@ -71,13 +74,16 @@ describe('Service: Token', function () {
             expect(function() { token.getParams(); }).toThrow(
                     new Error('Token is insufficiently configured. ' +
                             'Please configure the following options: ' +
-                            'gebo, redirect'));
+                            'gebo, redirect, clientId, clientName, localStorageName'));
         });
 
         it('should return an object if initialized', function() {
             token.setEndpoints({
               gebo: GEBO_ADDRESS,
               redirect: REDIRECT_URI,
+              clientId: CLIENT_ID,
+              clientName: CLIENT_NAME,
+              localStorageName: LOCAL_STORAGE_NAME
             });
 
             expect(token.getParams()).toEqual({
@@ -85,7 +91,7 @@ describe('Service: Token', function () {
               client_id: token.getEndpoints().clientId,
               client_name: token.getEndpoints().clientName,
               redirect_uri: REDIRECT_URI,
-              scope: 'read write'
+              scope: ''
             });
         });
     });
@@ -328,53 +334,5 @@ describe('Service: Token', function () {
                 $httpBackend.flush();
             }));
         });
-   
-        /**
-         * rmdir 
-         */
-        //describe('rmdir', function() {
-
-        //    var MONGO_ID = 'mongoId123',
-        //        NO_SUCH_MONGO_ID = 'noSuchMongoId123';
-
-        //     beforeEach(function() {
-        //        $httpBackend.whenDELETE(RMDIR_DATA_ENDPOINT + '?_id=' + MONGO_ID +
-        //                '&access_token=' + ACCESS_TOKEN).
-        //            respond(200, 'Deleted');
-        //        $httpBackend.whenDELETE(RMDIR_DATA_ENDPOINT + '?_id=' + NO_SUCH_MONGO_ID +
-        //                '&access_token=' + ACCESS_TOKEN).
-        //            respond(204, 'No such collection');
-        //     });
- 
-        //    it('should remove the collection', function() {
-        //        $httpBackend.expectDELETE(RMDIR_DATA_ENDPOINT + '?_id=' + MONGO_ID +
-        //                '&access_token=' + ACCESS_TOKEN);
-        //        var deferred = token.rmdir(MONGO_ID);
-
-        //        var code;
-        //        deferred.then(function(res) {
-        //            code = res;
-        //        });
-        //        
-        //        $httpBackend.flush();
-
-        //        expect(code).toBe('Deleted');
-        //    });
-
-        //    it('should not barf if asked to remove a collection that does not exist', function() {
-        //        $httpBackend.expectDELETE(RMDIR_DATA_ENDPOINT + '?_id=' + NO_SUCH_MONGO_ID +
-        //                '&access_token=' + ACCESS_TOKEN);
-        //        var deferred = token.rmdir(NO_SUCH_MONGO_ID);
-
-        //        var code;
-        //        deferred.then(function(res) {
-        //            code = res;
-        //        });
-        //        
-        //        $httpBackend.flush();
-
-        //        expect(code).toBe('No such collection');
-        //    });
-        //});
     });
 });
