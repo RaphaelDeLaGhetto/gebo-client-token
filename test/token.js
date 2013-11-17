@@ -22,17 +22,15 @@ describe('Service: Token', function () {
         $rootScope,
         $httpBackend;
 
-    beforeEach(function() {
-        module('geboClientApp');
-        inject(function (_Token_, $injector) {
-            token = _Token_;
+    
+    beforeEach(module('gebo-client-token'));
 
-            $httpBackend = $injector.get('$httpBackend');
-            $rootScope = $injector.get('$rootScope');
+    beforeEach(inject(function(Token, $injector) {
+        token = Token;
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $httpBackend.when('GET', 'views/main.html').respond();
 
-            $httpBackend.when('GET', 'views/main.html').respond();
-        });
-        
         /**
          * localStorage spies
          */
@@ -53,15 +51,14 @@ describe('Service: Token', function () {
         spyOn(localStorage, 'removeItem').andCallFake(function(key, value) {
             delete store[key]; 
         });
-
-    });
-  
+    }));
+        
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should do something', function () {
+    it('should do something', function() {
       expect(!!token).toBe(true);
     });
   
