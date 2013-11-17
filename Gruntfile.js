@@ -58,16 +58,6 @@ module.exports = function(grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-
-//	  karma: {
-//		//files: ['app/js/**/*.js', 'test/browser/**/*.js'],
-//        files: '<%= jshint.lib_test.src %>',
-//		tasks: ['karma:unit:run'] //NOTE the :run flag
-//	  },
-//      lib_test: {
-//        files: '<%= jshint.lib_test.src %>',
-//        tasks: ['jshint:lib_test', 'nodeunit']
-//      }
     },
 
 	// Karma
@@ -78,8 +68,6 @@ module.exports = function(grunt) {
       }
     },
   });
-
-
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-concat');
