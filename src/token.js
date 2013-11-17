@@ -26,15 +26,15 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
     var _endpoint = {
       gebo: REQUIRED_AND_MISSING,
       redirect: REQUIRED_AND_MISSING,
-      clientId: 'todo@example.com',
-      clientName: 'Todo, the gebo-client sample app',
+      clientId: REQUIRED_AND_MISSING,
+      clientName: REQUIRED_AND_MISSING,
       authorize: '/dialog/authorize',
       verify: '/verify',
       request: '/request',
       propose: '/propose',
       inform: '/inform',
-      localStorageName: 'todo-token',
-      scopes: ['read', 'write']
+      localStorageName: REQUIRED_AND_MISSING,
+      scopes: ''
     };
 
     /**
@@ -65,7 +65,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
           client_id: _endpoint.clientId,
           client_name: _endpoint.clientName,
           redirect_uri: _endpoint.redirect,
-          scope: _endpoint.scopes.join(' ')
+          scope: _endpoint.scopes
         };
       };
 
@@ -107,32 +107,6 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
     var _clear = function() {
         _data = {};
         localStorage.removeItem(_endpoint.localStorageName);
-      };
-
-    /**
-     * Verifies that the access token was issued to the current client.
-     *
-     * @param accessToken An access token received from the authorization server.
-     *
-     * @returns {Promise} Promise that will be resolved when the authorization 
-     *          server has verified that the token is valid, and we've verified
-     *          that the token is passed back has audience that matches our client
-     *          ID (to prevent the Confused Deputy Problem).
-     *
-     *          If there's an error verifying the token, the promise is rejected 
-     *          with an object identifying the `name` error
-     *          in the name member.  The `name` can be either:
-     *
-     *          - `invalid_audience`: The audience didn't match our client ID.
-     *          - `error_response`: The server responded with an error, typically
-     *            because the token was invalid.  In this
-     *            case, the callback parameters to `error` callback on `$http` 
-     *            are available in the object (`data`, `status`, `headers`, `endpoint`).
-     */
-    var _verifyAsync = function(accessToken) {
-        var deferred = $q.defer();
-        _verify(accessToken, deferred);
-        return deferred.promise;
       };
 
     /**
@@ -236,8 +210,10 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
 
     /**
      * Verify the user is still authenticated
+     *
+     * @param string
      */
-    var _verify = function(accessToken, deferred, next) {
+    var _verify = function(accessToken, deferred) {
 
         $http.get(_getEndpointUri('verify') + '?access_token=' + accessToken).
                 success(
@@ -248,55 +224,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
                     function(obj, err) {
                         deferred.reject(err);
                       });
-
-
-//        console.log(_getEndpointUri('verify'));
-//        var Token = $resource(_getEndpointUri('verify'),
-//                        { access_token: accessToken },
-//                        { verify: { method: 'GET' }});
-//
-//        Token.verify(
-//            function(data) {
-//                _data = data;
-//                deferred.resolve(data);
-//
-//                if (next) {
-//                  next();
-//                }
-//              },
-//            function(data, status, headers, endpoint) {
-//                  deferred.reject({
-//                    name: 'error_response',
-//                    data: data,
-//                    status: status,
-//                    headers: headers,
-//                    endpoint: endpoint
-//                  });
-//                });
       };
-
-    /**
-     * Remove a collection
-     *
-     * @param string
-     *
-     * @return promise
-     */
-//    var _rmdir = function(id) {
-//        var deferred = $q.defer();
-//
-//        $http.delete(_endpoint.rmdirDataEndpoint, { params: { _id: id, access_token: _get() }}).
-//                success(
-//                    function(res) {
-//                        deferred.resolve(res);
-//                      }).
-//                error(
-//                    function(err) {
-//                        deferred.reject(err);
-//                      });
-//
-//        return deferred.promise;
-//      };
 
     /**
      * Send a request
@@ -367,9 +295,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       getTokenByPopup: _getTokenByPopup,
       objectToQueryString: _objectToQueryString,
       verify: _verify,
-      verifyAsync: _verifyAsync,
       request: _request,
-      //rmdir: _rmdir,
       set: _set,
       setEndpoints: _setEndpoints,
     };
