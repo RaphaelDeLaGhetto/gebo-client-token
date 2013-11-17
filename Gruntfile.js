@@ -79,4 +79,24 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['jshint', 'karma', 'concat', 'uglify']);
 
+  grunt.registerTask('build', [
+//    'clean:dist',
+//    'jshint',
+//    'test',
+//    'coffee',
+//    'compass:dist',
+//    'useminPrepare',
+//    'imagemin',
+//    'cssmin',
+//    'htmlmin',
+    'concat',
+//    'copy',
+//    'cdnify',
+//    'ngmin',
+    'uglify',
+//    'rev',
+//    'usemin'
+  ]);
+
+
 };
