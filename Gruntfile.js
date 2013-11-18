@@ -17,7 +17,9 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['lib/<%= pkg.name %>.js'],
+        src: ['src/**/*.js'],
+        //dest: 'dist/token.js',
+        //src: ['lib/<%= pkg.name %>.js'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -68,7 +70,7 @@ module.exports = function(grunt) {
     copy: {
       build: {
         cwd: 'src',
-        src: ['**'],
+        src: ['*.html'],
         dest: 'dist',
         expand: true
       },
@@ -78,16 +80,16 @@ module.exports = function(grunt) {
         src: ['dist']
       },
     },
-    uglify: {
-      build: {
-        options: {
-          mangle: false
-        },
-        files: {
-          'dist/token.min.js': ['dist/**/*.js']
-        },
-      },
-    },
+//    uglify: {
+//      build: {
+//        options: {
+//          mangle: false
+//        },
+//        files: {
+//          'dist/token.min.js': ['dist/**/*.js']
+//        },
+//      },
+//    },
     ngmin: {
       dist: {
         files: [{
@@ -98,6 +100,15 @@ module.exports = function(grunt) {
         }]
       }
     },
+//    concat: {
+//      options: {
+//        separator: ';'
+//      },
+//      dist: {
+//        src: ['src/**/*.js'],
+//        dest: 'dist/token.js',
+//      },
+//    },
   });
 
   // These plugins provide necessary tasks.
@@ -108,18 +119,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-ngmin');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'karma', 'concat', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'karma', 'build']);
 
   grunt.registerTask('build', [
     'clean',
     'copy',
+    'concat',
     'ngmin',
     'uglify',
   ]);
-
-
 };
