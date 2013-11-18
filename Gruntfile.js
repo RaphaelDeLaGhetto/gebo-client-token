@@ -59,12 +59,43 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile']
       },
     },
-
-	// Karma
-	karma: {
+    karma: {
       unit: {
         configFile: 'karma.config.js',
         singleRun: true
+      }
+    },
+    copy: {
+      build: {
+        cwd: 'src',
+        src: ['**'],
+        dest: 'dist',
+        expand: true
+      },
+    },
+    clean: {
+      build: {
+        src: ['dist']
+      },
+    },
+    uglify: {
+      build: {
+        options: {
+          mangle: false
+        },
+        files: {
+          'dist/token.min.js': ['dist/**/*.js']
+        },
+      },
+    },
+    ngmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'dist',
+          src: '*.js',
+          dest: 'dist'
+        }]
       }
     },
   });
@@ -75,27 +106,19 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-ngmin');
 
   // Default task.
   grunt.registerTask('default', ['jshint', 'karma', 'concat', 'uglify']);
 
   grunt.registerTask('build', [
-//    'clean:dist',
-//    'jshint',
-//    'test',
-//    'coffee',
-//    'compass:dist',
-//    'useminPrepare',
-//    'imagemin',
-//    'cssmin',
-//    'htmlmin',
-    'concat',
-//    'copy',
-//    'cdnify',
-//    'ngmin',
+    'clean',
+    'copy',
+    'ngmin',
     'uglify',
-//    'rev',
-//    'usemin'
   ]);
 
 
