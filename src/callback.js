@@ -1,4 +1,4 @@
-;(function() {
+;(function(window) {
 'use strict';
 
 angular.module('gebo-client-token')
@@ -35,6 +35,5 @@ angular.module('gebo-client-token')
 
     window.opener.postMessage(params, '*');
     window.close();
-
   });
-}());
+}(window));
