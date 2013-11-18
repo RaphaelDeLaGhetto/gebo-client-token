@@ -3,23 +3,23 @@ gebo-client-token
 
 The client-side gebo OAuth2 AngularJS token service
 
-# Install
+## Install
 
 ```
 % bower install gebo-client-token --save
 ```
 
-# Point your app to its location:
+## Point your app to its location:
 
 The following will, of course, vary by project
 
-## On page load (e.g., index.html)
+### On page load (e.g., index.html)
 
 ```
 <script src="components/gebo-client-token/dist/gebo-client-token.min.js"></script>
 ```
 
-## Inject into the app (e.g., app.js)
+### Inject into the app (e.g., app.js)
 
 ```
 angular.module('geboRegistrantHaiApp', ['ngRoute', 'gebo-client-token']).
@@ -35,7 +35,7 @@ angular.module('geboRegistrantHaiApp', ['ngRoute', 'gebo-client-token']).
       });
 ```
 
-## Unit tests (e.g., karam.conf.js)
+### Unit tests (e.g., karam.conf.js)
 
 ```
 files = [
