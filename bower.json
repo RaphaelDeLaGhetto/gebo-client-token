@@ -1,11 +1,12 @@
 {
   "name": "gebo-client-token",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/RaphaelDeLaGhetto/gebo-client-token",
   "description": "Client-side AngularJS OAuth2 token service",
-  "main": "./dist/gebo-client-token.min.js",
+  "main": "./dist/token.min.js",
   "keywords": [
     "gebo",
+    "AngularJS",
     "OAuth2"
   ],
   "authors": [
