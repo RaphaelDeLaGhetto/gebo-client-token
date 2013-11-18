@@ -35,7 +35,7 @@ angular.module('geboRegistrantHaiApp', ['ngRoute', 'gebo-client-token']).
       });
 ```
 
-### Unit tests (e.g., karam.conf.js)
+### Unit tests (e.g., karma.conf.js)
 
 ```
 files = [
@@ -53,3 +53,21 @@ files = [
   ];
 ```
                                                                     
+## Configure the token (e.g., in main.js)
+
+```
+angular.module('myApp')
+    .controller('MainCtrl', function ($scope, Token) { 
+        var baseUrl = window.location.origin;
+                
+        Token.setEndpoints({
+            clientId: 'gebo-registrant-hai@capitolhill.ca',
+            clientName: 'some-gebo-hai',
+            gebo: 'https://localhost:3443', 
+            localStorageName: 'some-gebo-hai-token',
+            redirect: baseUrl + '/components/gebo-client-token/dist/oauth2callback.html',
+        }); 
+}); 
+
+```
+
