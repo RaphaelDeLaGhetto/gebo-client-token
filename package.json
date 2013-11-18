@@ -1,6 +1,6 @@
 {
   "name": "gebo-client-token",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Client-side AngularJS OAuth2 token service",
   "main": "./dist/gebo-client-token.min.js",
   "scripts": {
