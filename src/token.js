@@ -1,3 +1,4 @@
+;(function() {
 'use strict';
 
 angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
@@ -303,3 +304,4 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       setEndpoints: _setEndpoints,
     };
   });
+}());
