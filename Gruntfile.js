@@ -18,8 +18,6 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['src/**/*.js'],
-        //dest: 'dist/token.js',
-        //src: ['lib/<%= pkg.name %>.js'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -80,16 +78,6 @@ module.exports = function(grunt) {
         src: ['dist']
       },
     },
-//    uglify: {
-//      build: {
-//        options: {
-//          mangle: false
-//        },
-//        files: {
-//          'dist/token.min.js': ['dist/**/*.js']
-//        },
-//      },
-//    },
     ngmin: {
       dist: {
         files: [{
@@ -100,15 +88,6 @@ module.exports = function(grunt) {
         }]
       }
     },
-//    concat: {
-//      options: {
-//        separator: ';'
-//      },
-//      dist: {
-//        src: ['src/**/*.js'],
-//        dest: 'dist/token.js',
-//      },
-//    },
   });
 
   // These plugins provide necessary tasks.
