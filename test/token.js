@@ -60,7 +60,7 @@ describe('Service: Token', function () {
     });
 
     it('should do something', function() {
-      expect(!!token).toBe(true);
+        expect(!!token).toBe(true);
     });
   
     /**
@@ -164,7 +164,7 @@ describe('Service: Token', function () {
      */
     describe('objectToQueryString', function() {
         it('should take an object and spit out a query string', function() {
-           var obj = {
+            var obj = {
                     response_type: "token", 
                     client_id: token.getEndpoints().clientId, 
                     redirect_uri: REDIRECT_URI,
@@ -192,7 +192,7 @@ describe('Service: Token', function () {
             token.clear();
             expect(localStorage.removeItem).toHaveBeenCalled();
             expect(token.get()).toBe(undefined);
-            expect(token.data()).toEqual({});
+            expect(token.agent()).toEqual({});
         });
     });
 
@@ -306,14 +306,14 @@ describe('Service: Token', function () {
                 $httpBackend.expectGET(token.getEndpointUri('verify') + 
                         '?access_token=' + ACCESS_TOKEN); 
     
-                var deferred = $q.defer();
-                token.verify(ACCESS_TOKEN, deferred, function() {
-                    var data = token.data();
-                    expect(data.name).toEqual(VERIFICATION_DATA.name);
-                    expect(data.email).toEqual(VERIFICATION_DATA.email);
-                    expect(data.id).toEqual(VERIFICATION_DATA.id);
-                    expect(data.scopes).toEqual(VERIFICATION_DATA.scopes);
-                });
+                token.verify(ACCESS_TOKEN).
+                    then(function() {
+                        var agent = token.agent();
+                        expect(agent.name).toEqual(VERIFICATION_DATA.name);
+                        expect(agent.email).toEqual(VERIFICATION_DATA.email);
+                        expect(agent.id).toEqual(VERIFICATION_DATA.id);
+                        expect(agent.scopes).toEqual(VERIFICATION_DATA.scopes);
+                    });
     
                 $httpBackend.flush();
             }));

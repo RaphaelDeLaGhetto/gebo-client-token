@@ -7,7 +7,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
     /**
      * This is the data returned on verification.
      */
-    var _data = {};
+    var _agent = {};
 
     /**
      *  This response type must be passed to the authorization endpoint using
@@ -101,7 +101,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
      * authentication data
      */
     var _clear = function() {
-        _data = {};
+        _agent = {};
         localStorage.removeItem(_endpoint.localStorageName);
       };
 
@@ -217,6 +217,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
         $http.get(_getEndpointUri('verify') + '?access_token=' + accessToken).
                 success(
                     function(response) {
+                        _agent = response;
                         deferred.resolve(response);
                       }).
                 error(
@@ -286,8 +287,8 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
 
     return {
       clear: _clear,
-      data: function() {
-              return _data;
+      agent: function() {
+              return _agent;
             },
       formEncode: _formEncode,
       get: _get,
