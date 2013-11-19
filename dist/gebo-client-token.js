@@ -12,7 +12,7 @@
     '$resource',
     '$filter',
     function ($http, $q, $window, $rootScope, $resource, $filter) {
-      var _data = {};
+      var _agent = {};
       var RESPONSE_TYPE = 'token';
       var REQUIRED_AND_MISSING = {};
       var _endpoint = {
@@ -56,7 +56,7 @@
         localStorage.setItem(_endpoint.localStorageName, accessToken);
       };
       var _clear = function () {
-        _data = {};
+        _agent = {};
         localStorage.removeItem(_endpoint.localStorageName);
       };
       var _getTokenByPopup = function (extraParams, popupOptions) {
@@ -105,6 +105,7 @@
       var _verify = function (accessToken) {
         var deferred = $q.defer();
         $http.get(_getEndpointUri('verify') + '?access_token=' + accessToken).success(function (response) {
+          _agent = response;
           deferred.resolve(response);
         }).error(function (obj, err) {
           deferred.reject(err);
@@ -138,8 +139,8 @@
       }
       return {
         clear: _clear,
-        data: function () {
-          return _data;
+        agent: function () {
+          return _agent;
         },
         formEncode: _formEncode,
         get: _get,
