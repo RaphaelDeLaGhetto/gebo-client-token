@@ -25,6 +25,7 @@
           request: '/request',
           propose: '/propose',
           inform: '/inform',
+          send: '/send',
           localStorageName: REQUIRED_AND_MISSING,
           scopes: ''
         };
@@ -137,6 +138,17 @@
       function _getEndpointUri(endpoint) {
         return _endpoint.gebo + _endpoint[endpoint];
       }
+      function _send(message) {
+        var deferred = $q.defer();
+        message.access_token = _get();
+        $http.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
+        $http.post(_getEndpointUri('send'), message).success(function (response) {
+          deferred.resolve(response);
+        }).error(function (obj, err) {
+          deferred.reject(err);
+        });
+        return deferred.promise;
+      }
       return {
         clear: _clear,
         agent: function () {
@@ -153,6 +165,7 @@
         objectToQueryString: _objectToQueryString,
         verify: _verify,
         request: _request,
+        send: _send,
         set: _set,
         setEndpoints: _setEndpoints
       };
