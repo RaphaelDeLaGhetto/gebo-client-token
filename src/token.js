@@ -34,6 +34,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       request: '/request',
       propose: '/propose',
       inform: '/inform',
+      send: '/send',
       localStorageName: REQUIRED_AND_MISSING,
       scopes: ''
     };

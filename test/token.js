@@ -318,5 +318,25 @@ describe('Service: Token', function () {
                 $httpBackend.flush();
             }));
         });
+
+
+        /**
+         * send
+         */
+        describe('send', function() {
+
+            it('should POST a message to the server', function() {
+                $httpBackend.expectPOST(token.getEndpointUri('send'), {
+                    performative: 'request',
+                    action: 'friend',
+                    sender: token.agent().email,
+                    recipient: 'john@painter.com',
+                    gebo: 'https://foreigngebo.com',
+                    access_token: ACCESS_TOKEN,
+                });
+
+
+            });
+        });
     });
 });
