@@ -286,6 +286,32 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
         return _endpoint.gebo + _endpoint[endpoint]; 
       }
 
+    /**
+     * Send a message
+     *
+     * @param Object
+     *
+     * @return promise
+     */
+    function _send(message) {
+        var deferred = $q.defer();
+
+        message.access_token = _get();
+
+        $http.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
+        $http.post(_getEndpointUri('send'), message).
+                success(
+                    function(response) {
+                        deferred.resolve(response);
+                      }).
+                error(
+                    function(obj, err) {
+                        deferred.reject(err);
+                      });
+
+        return deferred.promise;
+      }
+   
     return {
       clear: _clear,
       agent: function() {
@@ -302,6 +328,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       objectToQueryString: _objectToQueryString,
       verify: _verify,
       request: _request,
+      send: _send,
       set: _set,
       setEndpoints: _setEndpoints,
     };

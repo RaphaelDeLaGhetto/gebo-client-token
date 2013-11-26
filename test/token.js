@@ -326,16 +326,21 @@ describe('Service: Token', function () {
         describe('send', function() {
 
             it('should POST a message to the server', function() {
-                $httpBackend.expectPOST(token.getEndpointUri('send'), {
-                    performative: 'request',
-                    action: 'friend',
-                    sender: token.agent().email,
-                    recipient: 'john@painter.com',
-                    gebo: 'https://foreigngebo.com',
-                    access_token: ACCESS_TOKEN,
-                });
+                var message = {
+                        performative: 'request',
+                        action: 'friend',
+                        sender: token.agent().email,
+                        recipient: 'john@painter.com',
+                        gebo: 'https://foreigngebo.com',
+                    }
 
+                var expectedMsg = angular.extend({ access_token: ACCESS_TOKEN }, message);
 
+                $httpBackend.expectPOST(token.getEndpointUri('send'), expectedMsg).respond();
+
+                token.send(message);
+
+                $httpBackend.flush();
             });
         });
     });
