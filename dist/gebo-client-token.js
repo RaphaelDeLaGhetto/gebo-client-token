@@ -22,9 +22,7 @@
           clientName: REQUIRED_AND_MISSING,
           authorize: '/dialog/authorize',
           verify: '/verify',
-          request: '/request',
-          propose: '/propose',
-          inform: '/inform',
+          perform: '/perform',
           send: '/send',
           localStorageName: REQUIRED_AND_MISSING,
           scopes: ''
@@ -113,11 +111,11 @@
         });
         return deferred.promise;
       };
-      function _request(content) {
+      function _perform(content) {
         var deferred = $q.defer();
         content.access_token = _get();
         $http.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
-        $http.post(_getEndpointUri('request'), content).success(function (response) {
+        $http.post(_getEndpointUri('perform'), content).success(function (response) {
           deferred.resolve(response);
         }).error(function (obj, err) {
           deferred.reject(err);
@@ -163,8 +161,8 @@
         getParams: _getParams,
         getTokenByPopup: _getTokenByPopup,
         objectToQueryString: _objectToQueryString,
+        perform: _perform,
         verify: _verify,
-        request: _request,
         send: _send,
         set: _set,
         setEndpoints: _setEndpoints
