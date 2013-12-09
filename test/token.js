@@ -109,9 +109,10 @@ describe('Service: Token', function () {
         it('should return a properly endpoint URIs', function() {
             expect(token.getEndpointUri('authorize')).toBe(GEBO_ADDRESS + token.getEndpoints().authorize);
             expect(token.getEndpointUri('verify')).toBe(GEBO_ADDRESS + token.getEndpoints().verify);
-            expect(token.getEndpointUri('request')).toBe(GEBO_ADDRESS + token.getEndpoints().request);
-            expect(token.getEndpointUri('propose')).toBe(GEBO_ADDRESS + token.getEndpoints().propose);
-            expect(token.getEndpointUri('inform')).toBe(GEBO_ADDRESS + token.getEndpoints().inform);
+            expect(token.getEndpointUri('perform')).toBe(GEBO_ADDRESS + token.getEndpoints().perform);
+//            expect(token.getEndpointUri('request')).toBe(GEBO_ADDRESS + token.getEndpoints().request);
+//            expect(token.getEndpointUri('propose')).toBe(GEBO_ADDRESS + token.getEndpoints().propose);
+//            expect(token.getEndpointUri('inform')).toBe(GEBO_ADDRESS + token.getEndpoints().inform);
         });
 
     });
@@ -226,9 +227,9 @@ describe('Service: Token', function () {
        });
 
         /**
-         * request
+         * perform
          */
-        describe('request', function() {
+        describe('perform', function() {
         
             /**
              * action: ls
@@ -236,13 +237,13 @@ describe('Service: Token', function () {
             describe('action: ls', function() {
 
                 it('should get the list of documents in the collection', function() {
-                    $httpBackend.expectPOST(token.getEndpointUri('request'), {
+                    $httpBackend.expectPOST(token.getEndpointUri('perform'), {
                             action: 'ls',
                             access_token: ACCESS_TOKEN
                         }).respond([{ _id: '1', name: 'doc 1'},
                                     { _id: '2', name: 'doc 2'}]);
 
-                    var deferred = token.request({ action: 'ls' });
+                    var deferred = token.perform({ action: 'ls' });
        
                     var _list;
                     deferred.then(function(list) {
@@ -262,14 +263,14 @@ describe('Service: Token', function () {
              * action: cp
              */
             describe('action: cp', function() {
-                it('should get the requested document from the collection', function() {
-                    $httpBackend.expectPOST(token.getEndpointUri('request'), {
+                it('should make a copy of the document in the collection specified', function() {
+                    $httpBackend.expectPOST(token.getEndpointUri('perform'), {
                             action: 'cp',
                             id: '1',
                             access_token: ACCESS_TOKEN
                         }).respond(VERIFICATION_DATA);
 
-                     var deferred = token.request({ action: 'cp', id: '1' });
+                     var deferred = token.perform({ action: 'cp', id: '1' });
         
                      var _doc;
                      deferred.then(function(doc) {
@@ -334,7 +335,7 @@ describe('Service: Token', function () {
                         gebo: 'https://foreigngebo.com',
                     }
 
-                var expectedMsg = angular.extend({ access_token: ACCESS_TOKEN }, message);
+                var expectedMsg = angular.extend(message, { access_token: ACCESS_TOKEN });
 
                 $httpBackend.expectPOST(token.getEndpointUri('send'), expectedMsg).respond();
 

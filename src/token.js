@@ -31,9 +31,10 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       clientName: REQUIRED_AND_MISSING,
       authorize: '/dialog/authorize',
       verify: '/verify',
-      request: '/request',
-      propose: '/propose',
-      inform: '/inform',
+//      request: '/request',
+//      propose: '/propose',
+//      inform: '/inform',
+      perform: '/perform',
       send: '/send',
       localStorageName: REQUIRED_AND_MISSING,
       scopes: ''
@@ -230,17 +231,17 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       };
 
     /**
-     * Send a request
+     * Attempt to perform an action on a resource
      *
      * @param Object 
      */
-    function _request(content) {
+    function _perform(content) {
         var deferred = $q.defer();
 
         content.access_token = _get();
 
         $http.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
-        $http.post(_getEndpointUri('request'), content).
+        $http.post(_getEndpointUri('perform'), content).
                 success(
                     function(response) {
                         deferred.resolve(response);
@@ -326,8 +327,9 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       getParams: _getParams,
       getTokenByPopup: _getTokenByPopup,
       objectToQueryString: _objectToQueryString,
+      perform: _perform,
       verify: _verify,
-      request: _request,
+//      request: _request,
       send: _send,
       set: _set,
       setEndpoints: _setEndpoints,
