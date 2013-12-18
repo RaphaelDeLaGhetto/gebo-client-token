@@ -20,6 +20,13 @@ describe('Service: Token', function () {
                 admin: false,
             };
 
+    var GEBO_FILE_OBJECT = {
+                name: 'test-file.txt',
+                collectionName: 'dan_at_example_dot_com',
+                type: 'text/plain',
+                size: 128,
+            };
+
     var token,
         $rootScope,
         $httpBackend;
@@ -106,13 +113,10 @@ describe('Service: Token', function () {
             });
           });
 
-        it('should return a properly endpoint URIs', function() {
+        it('should return a properly formatted endpoint URI', function() {
             expect(token.getEndpointUri('authorize')).toBe(GEBO_ADDRESS + token.getEndpoints().authorize);
             expect(token.getEndpointUri('verify')).toBe(GEBO_ADDRESS + token.getEndpoints().verify);
             expect(token.getEndpointUri('perform')).toBe(GEBO_ADDRESS + token.getEndpoints().perform);
-//            expect(token.getEndpointUri('request')).toBe(GEBO_ADDRESS + token.getEndpoints().request);
-//            expect(token.getEndpointUri('propose')).toBe(GEBO_ADDRESS + token.getEndpoints().propose);
-//            expect(token.getEndpointUri('inform')).toBe(GEBO_ADDRESS + token.getEndpoints().inform);
         });
 
     });
@@ -177,7 +181,6 @@ describe('Service: Token', function () {
                                 '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
                                 '&scope=' + SCOPES);
         });
-
     }); 
 
     /**
@@ -261,8 +264,7 @@ describe('Service: Token', function () {
 
             /**
              * action: cp
-             */
-            describe('action: cp', function() {
+             */ describe('action: cp', function() {
                 it('should make a copy of the document in the collection specified', function() {
                     $httpBackend.expectPOST(token.getEndpointUri('perform'), {
                             action: 'cp',
@@ -285,6 +287,40 @@ describe('Service: Token', function () {
                      expect(_doc.admin).toEqual(false);
                 });
             });
+
+            /**
+             * action: save
+             */
+//            describe('action: save', function() {
+//                var elm;
+//
+//                beforeEach(inject(function($compile) {
+//                    elm = angular.element('<input id="filePicker" type="file"</input>');
+//                    $compile(elm)($rootScope);
+//                }));
+//
+//                it('should save the file and return a gebo file object', function() {
+//
+//                     $httpBackend.expectPOST(token.getEndpointUri('perform'), {
+//                            action: 'save',
+//                            gebo: GEBO_ADDRESS,
+//                            content: {
+//                                files: {
+//                                    0: {
+//                                        name: 'test-file.txt',
+//                                        size: 124,
+//                                        type: 'text/plain',
+//                                    },
+//                                    length: 1,
+//                                },
+//                            },
+//                            access_token: ACCESS_TOKEN,
+//                        }).respond(GEBO_FILE_OBJECT);
+//
+//
+//                     var deferred = token.perform({ action: 'cp', id: '1' });
+//                });
+//            });
         });
 
         /**
