@@ -230,6 +230,8 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
     /**
      * Attempt to perform an action on a resource
      *
+     * You'd think this would be easy to DRY out...
+     *
      * @param Object 
      */
     function _perform(content) {
@@ -240,20 +242,29 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
         if (content instanceof FormData) {
           content.append('access_token', _get());
 
-          $http.defaults.headers.common['Content-Type'] = undefined;
-          $http.defaults.transformRequest = angular.identity;
+          $http.post(_getEndpointUri('perform'), content, {
+                  headers: { 'Content-Type': undefined },
+                  transformRequest: angular.identity }).
+                success(function(response) {
+                    deferred.resolve(response);
+                  }).
+                error(function(obj, err) {
+                    deferred.reject({ code: err, message: obj });
+                  });
         }
         else {
           content.access_token = _get();
           $http.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
+
+          $http.post(_getEndpointUri('perform'), content).
+                success(function(response) {
+                    deferred.resolve(response);
+                  }).
+                error(function(obj, err) {
+                    deferred.reject({ code: err, message: obj });
+                  });
         }
-        $http.post(_getEndpointUri('perform'), content).
-              success(function(response) {
-                  deferred.resolve(response);
-                }).
-              error(function(obj, err) {
-                  deferred.reject({ code: err, message: obj });
-                });
+
         return deferred.promise;
       };
 
