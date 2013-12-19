@@ -239,7 +239,7 @@ describe('Service: Token', function () {
              */
             describe('action: ls', function() {
 
-                it('should get the list of documents in the collection', function() {
+                it('should get the list of documents in the collection when given JSON content', function() {
                     $httpBackend.expectPOST(token.getEndpointUri('perform'), {
                             action: 'ls',
                             access_token: ACCESS_TOKEN
@@ -260,13 +260,79 @@ describe('Service: Token', function () {
                     expect(_list[1]._id).toBe('2');
                     expect(_list[1].name).toBe('doc 2');
                 });
+
+                it('should get the list of documents in the collection when given FormData content', function() {
+                    var form = new FormData();
+                    form.append('action', 'ls');
+                    form.append('access_token', ACCESS_TOKEN);
+
+                    $httpBackend.expectPOST(token.getEndpointUri('perform'), form).
+                        respond([{ _id: '1', name: 'doc 1'},
+                                 { _id: '2', name: 'doc 2'}]);
+
+                    var deferred = token.perform(form);
+       
+                    var _list;
+                    deferred.then(function(list) {
+                      _list = list; 
+                    });
+       
+                    $httpBackend.flush();
+       
+                    expect(_list[0]._id).toBe('1');
+                    expect(_list[0].name).toBe('doc 1');
+                    expect(_list[1]._id).toBe('2');
+                    expect(_list[1].name).toBe('doc 2');
+                });
+
+                it('should return an error code and message when give JSON content', function() {
+                    $httpBackend.expectPOST(token.getEndpointUri('perform'), {
+                            action: 'ls',
+                            id: '1',
+                            access_token: ACCESS_TOKEN
+                        }).respond(501, 'Something bad happened');
+
+                     var deferred = token.perform({ action: 'ls', id: '1' });
+        
+                     var _doc;
+                     deferred.catch(function(doc) {
+                       _doc = doc; 
+                     });
+        
+                     $httpBackend.flush();
+        
+                     expect(_doc.code).toBe(501);
+                     expect(_doc.message).toBe('Something bad happened');
+                });
+
+                it('should return an error code and message when give FormData content', function() {
+                    var form = new FormData();
+                    form.append('action', 'ls');
+                    form.append('access_token', ACCESS_TOKEN);
+
+                    $httpBackend.expectPOST(token.getEndpointUri('perform'), form).
+                        respond(501, 'Something bad happened');
+
+                    var deferred = token.perform(form);
+        
+                    var _doc;
+                    deferred.catch(function(doc) {
+                      _doc = doc; 
+                    });
+        
+                    $httpBackend.flush();
+        
+                    expect(_doc.code).toBe(501);
+                    expect(_doc.message).toBe('Something bad happened');
+                });
+ 
             });
 
             /**
              * action: cp
              */
             describe('action: cp', function() {
-                it('should make a copy of the document in the collection specified', function() {
+                it('should make a copy of the document in the collection specified when given JSON content', function() {
                     $httpBackend.expectPOST(token.getEndpointUri('perform'), {
                             action: 'cp',
                             id: '1',
@@ -288,7 +354,32 @@ describe('Service: Token', function () {
                      expect(_doc.admin).toEqual(false);
                 });
 
-                it('should return an error code and message', function() {
+                it('should make a copy of the document in the collection specified when given FormData content', function() {
+                    var form = new FormData();
+                    form.append('action', 'cp');
+                    form.append('id', '1');
+                    form.append('access_token', ACCESS_TOKEN);
+
+                    $httpBackend.expectPOST(token.getEndpointUri('perform'), form).
+                        respond(VERIFICATION_DATA);
+
+                    var deferred = token.perform(form);
+        
+                    var _doc;
+                    deferred.then(function(doc) {
+                      _doc = doc; 
+                    });
+        
+                    $httpBackend.flush();
+        
+                    expect(_doc._id).toBe('1');
+                    expect(_doc.name).toBe('dan');
+                    expect(_doc.email).toBe('dan@email.com');
+                    expect(_doc.admin).toEqual(false);
+                });
+
+
+                it('should return an error code and message when given JSON content', function() {
                     $httpBackend.expectPOST(token.getEndpointUri('perform'), {
                             action: 'cp',
                             id: '1',
@@ -306,6 +397,28 @@ describe('Service: Token', function () {
         
                      expect(_doc.code).toBe(501);
                      expect(_doc.message).toBe('Something bad happened');
+                });
+
+                it('should return an error code and message when given FormData content', function() {
+                    var form = new FormData();
+                    form.append('action', 'cp');
+                    form.append('id', '1');
+                    form.append('access_token', ACCESS_TOKEN);
+
+                    $httpBackend.expectPOST(token.getEndpointUri('perform'), form).
+                        respond(501, 'Something bad happened');
+
+                    var deferred = token.perform(form);
+       
+                    var _doc;
+                    deferred.catch(function(doc) {
+                      _doc = doc; 
+                    });
+       
+                    $httpBackend.flush();
+       
+                    expect(_doc.code).toBe(501);
+                    expect(_doc.message).toBe('Something bad happened');
                 });
             });
 

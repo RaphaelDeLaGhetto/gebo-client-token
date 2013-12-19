@@ -239,57 +239,24 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
         // a FormData object or plain JSON
         if (content instanceof FormData) {
           content.append('access_token', _get());
-          $http.post(_getEndpointUri('perform'), content, {
-                      headers: { 'Content-Type': undefined },
-                      transformRequest: angular.identity
-                  }).
-                success(function (response) {
-                    deferred.resolve(response);
-                  }).
-                error(function (obj, err) {
-                    deferred.reject(err);
-                  });
+
+          $http.defaults.headers.common['Content-Type'] = undefined;
+          $http.defaults.transformRequest = angular.identity;
         }
         else {
           content.access_token = _get();
           $http.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
-          $http.post(_getEndpointUri('perform'), content).
-                success(function(response) {
-                    deferred.resolve(response);
-                  }).
-                error(function(obj, err) {
-                    deferred.reject({ code: err, message: obj });
-                  });
         }
+        $http.post(_getEndpointUri('perform'), content).
+              success(function(response) {
+                  deferred.resolve(response);
+                }).
+              error(function(obj, err) {
+                  deferred.reject({ code: err, message: obj });
+                });
         return deferred.promise;
-
-//        var deferred = $q.defer();
-//
-//        content.access_token = _get();
-//
-//        $http.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
-//        $http.post(_getEndpointUri('perform'), content).
-//                success(
-//                    function(response) {
-//                        deferred.resolve(response);
-//                      }).
-//                error(
-//                    function(obj, err) {
-//                        deferred.reject(err);
-//                      });
-//
-//        return deferred.promise;
       };
 
-    /**
-     * Convert to a FormData object
-     *
-     * @param JSON
-     */
-    function _convertToFormData(obj) {
-
-
-      };
     /**
      * Encode embedded JSON
      *
@@ -354,7 +321,6 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       agent: function() {
               return _agent;
             },
-      convertToFormData: _convertToFormData,
       formEncode: _formEncode,
       get: _get,
       getEndpoints: function() {
