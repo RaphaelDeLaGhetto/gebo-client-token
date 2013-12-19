@@ -129,7 +129,10 @@
           $http.post(_getEndpointUri('perform'), content).success(function (response) {
             deferred.resolve(response);
           }).error(function (obj, err) {
-            deferred.reject(err);
+            deferred.reject({
+              code: err,
+              message: obj
+            });
           });
         }
         return deferred.promise;
