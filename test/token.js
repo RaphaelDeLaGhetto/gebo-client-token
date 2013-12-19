@@ -260,11 +260,12 @@ describe('Service: Token', function () {
                     expect(_list[1]._id).toBe('2');
                     expect(_list[1].name).toBe('doc 2');
                 });
-             });
+            });
 
             /**
              * action: cp
-             */ describe('action: cp', function() {
+             */
+            describe('action: cp', function() {
                 it('should make a copy of the document in the collection specified', function() {
                     $httpBackend.expectPOST(token.getEndpointUri('perform'), {
                             action: 'cp',
@@ -285,6 +286,26 @@ describe('Service: Token', function () {
                      expect(_doc.name).toBe('dan');
                      expect(_doc.email).toBe('dan@email.com');
                      expect(_doc.admin).toEqual(false);
+                });
+
+                it('should return an error code and message', function() {
+                    $httpBackend.expectPOST(token.getEndpointUri('perform'), {
+                            action: 'cp',
+                            id: '1',
+                            access_token: ACCESS_TOKEN
+                        }).respond(501, 'Something bad happened');
+
+                     var deferred = token.perform({ action: 'cp', id: '1' });
+        
+                     var _doc;
+                     deferred.catch(function(doc) {
+                       _doc = doc; 
+                     });
+        
+                     $httpBackend.flush();
+        
+                     expect(_doc.code).toBe(501);
+                     expect(_doc.message).toBe('Something bad happened');
                 });
             });
 
