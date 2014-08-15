@@ -33,6 +33,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       verify: '/verify',
       perform: '/perform',
       send: '/send',
+      logout: '/logout',
       localStorageName: REQUIRED_AND_MISSING,
       scopes: ''
     };
@@ -326,6 +327,22 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
 
         return deferred.promise;
       }
+
+    function _logout() {
+        var deferred = $q.defer();
+
+        $http.get(_getEndpointUri('logout')).
+                success(
+                    function(response) {
+                        deferred.resolve(response);
+                      }).
+                error(
+                    function(obj, err) {
+                        deferred.reject(err);
+                      });
+
+        return deferred.promise;
+      }
    
     return {
       clear: _clear,
@@ -340,6 +357,7 @@ angular.module('gebo-client-token', ['ngRoute', 'ngResource'])
       getEndpointUri: _getEndpointUri,
       getParams: _getParams,
       getTokenByPopup: _getTokenByPopup,
+      logout: _logout,
       objectToQueryString: _objectToQueryString,
       perform: _perform,
       verify: _verify,

@@ -71,6 +71,35 @@ describe('Service: Token', function () {
     });
   
     /**
+     * logout
+     */
+    describe('logout', function() {
+
+        it('should GET /logout from the gebo', function() {
+            token.setEndpoints({
+              gebo: GEBO_ADDRESS,
+              clientId: CLIENT_ID,
+              localStorageName: LOCAL_STORAGE_NAME
+            });
+
+//            $httpBackend.expectGET(token.getEndpointUri('logout') + 
+//                    '?access_token=' + ACCESS_TOKEN).respond('Okay'); 
+            $httpBackend.expectGET(token.getEndpointUri('logout')).respond('Okay'); 
+
+            var deferred = token.logout();
+
+            var _res;
+            deferred.then(function(res) {
+              _res = res; 
+            });
+
+            $httpBackend.flush();
+
+            expect(_res).toEqual('Okay');
+          });
+      });
+
+    /**
      * getParams
      */
     describe('getParams', function() {
