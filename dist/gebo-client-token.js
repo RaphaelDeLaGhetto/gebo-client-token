@@ -1,4 +1,4 @@
-/*! gebo-client-token - v0.0.13 - 2014-08-15
+/*! gebo-client-token - v0.0.16 - 2014-08-15
 * Copyright (c) 2014 ; Licensed  */
 ;
 (function () {
